@@ -18,9 +18,7 @@ public class AlarmCleanupService {
 	public String analisar() {
 
 		long bad = repository.countByMessage(QUALITY_BAD);
-
 		long good = repository.countByMessage(QUALITY_GOOD);
-
 		long total = bad + good;
 
 		return """
@@ -51,7 +49,6 @@ public class AlarmCleanupService {
 	public String apagar(int quantidade) {
 
 		int badRemovidos = repository.deleteTopBad(quantidade);
-
 		int goodRemovidos = repository.deleteTopGood(quantidade);
 
 		int total = badRemovidos + goodRemovidos;
