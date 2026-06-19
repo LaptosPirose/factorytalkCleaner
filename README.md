@@ -14,10 +14,13 @@ O FactoryTalkCleaner tem como objetivo reduzir ruídos em bases históricas de a
 - Exportação de resultados
 - Preparação de dados para análise posterior
 
-## Tecnologias
+## Stack Tecnológica
 
-- Java
+- Java 26
+- Spring Boot
 - Maven
+- JUnit (testes)
+- Git/GitHub (controle de versão)
 
 ## Como executar
 
