@@ -16,23 +16,14 @@ public class AllEvent {
 	@Column(name = "EventID")
 	private UUID eventID;
 
-	@Column(name = "EventType")
-	private Integer eventType;
-
 	@Column(name = "SourceName")
 	private String sourceName;
 
 	@Column(name = "Message")
 	private String message;
 
-	@Column(name = "Severity")
-	private Integer severity;
-
 	@Column(name = "Active")
 	private Boolean active;
-
-	@Column(name = "Acked")
-	private Boolean acked;
 
 	@Column(name = "EventTimeStamp")
 	private LocalDateTime eventTimeStamp;
@@ -45,14 +36,6 @@ public class AllEvent {
 
 	public void setEventID(UUID eventID) {
 		this.eventID = eventID;
-	}
-
-	public Integer getEventType() {
-		return eventType;
-	}
-
-	public void setEventType(Integer eventType) {
-		this.eventType = eventType;
 	}
 
 	public String getSourceName() {
@@ -71,28 +54,12 @@ public class AllEvent {
 		this.message = message;
 	}
 
-	public Integer getSeverity() {
-		return severity;
-	}
-
-	public void setSeverity(Integer severity) {
-		this.severity = severity;
-	}
-
 	public Boolean getActive() {
 		return active;
 	}
 
 	public void setActive(Boolean active) {
 		this.active = active;
-	}
-
-	public Boolean getAcked() {
-		return acked;
-	}
-
-	public void setAcked(Boolean acked) {
-		this.acked = acked;
 	}
 
 	public LocalDateTime getEventTimeStamp() {

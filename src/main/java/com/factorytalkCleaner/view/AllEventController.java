@@ -1,24 +1,24 @@
 package com.factorytalkCleaner.view;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.factorytalkCleaner.repository.AllEventRepository;
+import com.factorytalkCleaner.service.AlarmCleanupService;
+import com.factorytalkCleaner.entity.AllEvent;
 
 @RestController
-@RequestMapping("/eventos")
+@RequestMapping("/exibicao")
 public class AllEventController {
 
-	@Autowired
-	private AllEventRepository repository;
+	private final AlarmCleanupService alarmCleanupService;
 
-	@GetMapping
-	public String listar() {
-		long inicio = System.currentTimeMillis();
-		repository.show();
-		long fim = System.currentTimeMillis();
-		return "Tempo: " + (fim - inicio) + " ms";
+	public AllEventController(AlarmCleanupService alarmCleanupService) {
+		this.alarmCleanupService = alarmCleanupService;
+	}
+
+	@GetMapping("/eventos")
+	public List<AllEvent> obterEventos() {
+		return alarmCleanupService.listarAmostragem();
 	}
 }
