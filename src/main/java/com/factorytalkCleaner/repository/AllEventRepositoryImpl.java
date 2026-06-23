@@ -6,6 +6,7 @@ import com.factorytalkCleaner.entity.AllEvent;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 public class AllEventRepositoryImpl implements AllEventRepositoryCustom {
@@ -19,7 +20,7 @@ public class AllEventRepositoryImpl implements AllEventRepositoryCustom {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<AllEvent> show() {
-		String sql = "SELECT * FROM Alarmes.dbo.AllEvent";
+		String sql = "SELECT TOP 50000 * FROM Alarmes.dbo.AllEvent ORDER BY Alarmes.dbo.AllEvent.EventTimeStamp DESC";
 		return entityManager.createNativeQuery(sql, AllEvent.class).getResultList();
 	}
 
@@ -37,5 +38,20 @@ public class AllEventRepositoryImpl implements AllEventRepositoryCustom {
 		String sql = "DELETE TOP (:qtd) FROM Alarmes.dbo.AllEvent WHERE Message = :msg";
 		return entityManager.createNativeQuery(sql).setParameter("qtd", quantidade).setParameter("msg", QUALITY_GOOD)
 				.executeUpdate();
+	}
+
+	@Override
+	@Transactional
+	public int deletarAlarmesAntigosEmLote(int batchSize) {
+		String sql = "DELETE TOP (:batchSize) FROM dbo.AllEvent WITH (ROWLOCK) " + "WHERE Message IN (:mensagensAlvo)";
+
+		List<String> mensagensAlvo = List.of("Alarm fault: Alarm input quality is bad",
+				"Alarm fault cleared: Alarm input quality is good");
+
+		Query query = entityManager.createNativeQuery(sql);
+		query.setParameter("batchSize", batchSize);
+		query.setParameter("mensagensAlvo", mensagensAlvo);
+
+		return query.executeUpdate();
 	}
 }
