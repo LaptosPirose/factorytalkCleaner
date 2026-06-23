@@ -90,7 +90,6 @@ public class AlarmCleanupService {
 
 		log.info("Limpeza total concluída! Foram removidos {} registros de ruído.", totalRegistrosApagados);
 
-		// O Service agora é o dono da mensagem de retorno
 		return """
 					"status": "Sucesso",
 					"mensagem": "Limpeza total de alarmes de qualidade concluída via Service.",
