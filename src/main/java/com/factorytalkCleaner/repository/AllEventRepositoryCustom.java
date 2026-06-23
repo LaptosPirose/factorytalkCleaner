@@ -1,27 +1,12 @@
 package com.factorytalkCleaner.repository;
 
 import java.util.List;
-
 import com.factorytalkCleaner.entity.AllEvent;
+import org.springframework.data.domain.Pageable; // Certifique-se deste import
 
 public interface AllEventRepositoryCustom {
 
-	List<AllEvent> show();
+	List<AllEvent> show(Pageable pageable);
 
-	int deleteTopBad(int quantidade);
-
-	int deleteTopGood(int quantidade);
-
-	/**
-	 * Remove um lote limitado de alarmes antigos utilizando dicas de bloqueio por
-	 * linha (ROWLOCK) para evitar o escalonamento de bloqueio (Table Lock) no SQL
-	 * Server.
-	 *
-	 * @param dataLimite Alarmes com EventTimeStamp anterior a esta data serão
-	 *                   removidos.
-	 * @param batchSize  Quantidade máxima de registos a apagar nesta execução.
-	 * @return O número de linhas efetivamente eliminadas.
-	 */
-	int deletarAlarmesAntigosEmLote(int batchSize);
-
+	int deletarAlarmesAntigosEmLote(int batchSize, List<String> mensagensAlvo);
 }

@@ -2,6 +2,8 @@ package com.factorytalkCleaner.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 import com.factorytalkCleaner.entity.AllEvent;
 
 import jakarta.persistence.EntityManager;
@@ -14,39 +16,34 @@ public class AllEventRepositoryImpl implements AllEventRepositoryCustom {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private static final String QUALITY_BAD = "Alarm fault: Alarm input quality is bad";
-	private static final String QUALITY_GOOD = "Alarm fault cleared: Alarm input quality is good";
-
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<AllEvent> show() {
-		String sql = "SELECT TOP 50000 * FROM Alarmes.dbo.AllEvent ORDER BY Alarmes.dbo.AllEvent.EventTimeStamp DESC";
-		return entityManager.createNativeQuery(sql, AllEvent.class).getResultList();
+	public List<AllEvent> show(Pageable pageable) {
+		String sql = "SELECT * FROM Alarmes.dbo.AllEvent ORDER BY Alarmes.dbo.AllEvent.EventTimeStamp DESC";
+		Query query = entityManager.createNativeQuery(sql, AllEvent.class);
+
+		query.setFirstResult((int) pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+
+		return query.getResultList();
 	}
 
+	/**
+	 * Limpeza performática em lote usando a lista dinâmica do
+	 * application.properties. O uso do WITH (ROWLOCK) evita travar a tabela inteira
+	 * (Table Lock) na produção da fábrica.
+	 */
 	@Override
 	@Transactional
-	public int deleteTopBad(int quantidade) {
-		String sql = "DELETE TOP (:qtd) FROM Alarmes.dbo.AllEvent WHERE Message = :msg";
-		return entityManager.createNativeQuery(sql).setParameter("qtd", quantidade).setParameter("msg", QUALITY_BAD)
-				.executeUpdate();
-	}
+	public int deletarAlarmesAntigosEmLote(int batchSize, List<String> mensagensAlvo) {
+		// Proteção: Se a lista vier vazia ou nula, cancela para não gerar erro de
+		// sintaxe no SQL
+		if (mensagensAlvo == null || mensagensAlvo.isEmpty()) {
+			return 0;
+		}
 
-	@Override
-	@Transactional
-	public int deleteTopGood(int quantidade) {
-		String sql = "DELETE TOP (:qtd) FROM Alarmes.dbo.AllEvent WHERE Message = :msg";
-		return entityManager.createNativeQuery(sql).setParameter("qtd", quantidade).setParameter("msg", QUALITY_GOOD)
-				.executeUpdate();
-	}
-
-	@Override
-	@Transactional
-	public int deletarAlarmesAntigosEmLote(int batchSize) {
-		String sql = "DELETE TOP (:batchSize) FROM dbo.AllEvent WITH (ROWLOCK) " + "WHERE Message IN (:mensagensAlvo)";
-
-		List<String> mensagensAlvo = List.of("Alarm fault: Alarm input quality is bad",
-				"Alarm fault cleared: Alarm input quality is good");
+		// Query unificada e dinâmica utilizando o operador IN
+		String sql = "DELETE TOP (:batchSize) FROM Alarmes.dbo.AllEvent WITH (ROWLOCK) WHERE Message IN (:mensagensAlvo)";
 
 		Query query = entityManager.createNativeQuery(sql);
 		query.setParameter("batchSize", batchSize);
