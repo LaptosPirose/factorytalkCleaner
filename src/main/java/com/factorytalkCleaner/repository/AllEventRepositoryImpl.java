@@ -37,17 +37,32 @@ public class AllEventRepositoryImpl implements AllEventRepositoryCustom {
 	@Transactional
 	public int deletarAlarmesAntigosEmLote(int batchSize, List<String> mensagensAlvo) {
 		// Proteção: Se a lista vier vazia ou nula, cancela para não gerar erro de
-		// sintaxe no SQL
+		// sintaxe
 		if (mensagensAlvo == null || mensagensAlvo.isEmpty()) {
 			return 0;
 		}
 
-		// Query unificada e dinâmica utilizando o operador IN
-		String sql = "DELETE TOP (:batchSize) FROM Alarmes.dbo.AllEvent WITH (ROWLOCK) WHERE Message IN (:mensagensAlvo)";
+		// StringBuilder para construir as cláusulas: (Message LIKE :msg0 OR Message
+		// LIKE :msg1 ...)
+		StringBuilder whereClause = new StringBuilder("(");
+		for (int i = 0; i < mensagensAlvo.size(); i++) {
+			whereClause.append("Message LIKE :msg").append(i);
+			if (i < mensagensAlvo.size() - 1) {
+				whereClause.append(" OR ");
+			}
+		}
+		whereClause.append(")");
+
+		// Monta a Query final dinâmica usando as cláusulas LIKE montadas acima
+		String sql = "DELETE TOP (:batchSize) FROM Alarmes.dbo.AllEvent WITH (ROWLOCK) WHERE " + whereClause.toString();
 
 		Query query = entityManager.createNativeQuery(sql);
 		query.setParameter("batchSize", batchSize);
-		query.setParameter("mensagensAlvo", mensagensAlvo);
+
+		// Vincula cada parâmetro da lista com seu respectivo índice (:msg0, :msg1...)
+		for (int i = 0; i < mensagensAlvo.size(); i++) {
+			query.setParameter("msg" + i, mensagensAlvo.get(i).trim());
+		}
 
 		return query.executeUpdate();
 	}
