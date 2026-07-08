@@ -1,4 +1,4 @@
-package com.factorytalkCleaner.service;
+package com.factorytalkCleaner.cleaner.service;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.factorytalkCleaner.entity.AllEvent;
-import com.factorytalkCleaner.repository.AllEventRepository;
+import com.factorytalkCleaner.cleaner.entity.AllEvent;
+import com.factorytalkCleaner.cleaner.repository.AllEventRepository;
 
 @Service
 public class AlarmCleanupService {

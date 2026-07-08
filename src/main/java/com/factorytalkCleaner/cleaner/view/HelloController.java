@@ -1,4 +1,4 @@
-package com.factorytalkCleaner.view;
+package com.factorytalkCleaner.cleaner.view;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

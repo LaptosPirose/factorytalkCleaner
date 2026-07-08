@@ -1,4 +1,4 @@
-package com.factorytalkCleaner.view;
+package com.factorytalkCleaner.cleaner.view;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.factorytalkCleaner.entity.AllEvent;
-import com.factorytalkCleaner.service.AlarmCleanupService;
+import com.factorytalkCleaner.cleaner.entity.AllEvent;
+import com.factorytalkCleaner.cleaner.service.AlarmCleanupService;
 
 @RestController
-@RequestMapping("/exibicao")
+@RequestMapping("/clean/exibicao")
 public class AllEventController {
 
 	private final AlarmCleanupService alarmCleanupService;

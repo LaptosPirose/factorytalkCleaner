@@ -1,14 +1,14 @@
-package com.factorytalkCleaner.view;
+package com.factorytalkCleaner.cleaner.view;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.factorytalkCleaner.service.AlarmCleanupService;
+import com.factorytalkCleaner.cleaner.service.AlarmCleanupService;
 
 @RestController
-@RequestMapping("/limpeza")
+@RequestMapping("/clean")
 public class AlarmCleanupController {
 
 	private final AlarmCleanupService alarmCleanupService;

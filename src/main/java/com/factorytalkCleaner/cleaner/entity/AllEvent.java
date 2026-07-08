@@ -1,4 +1,4 @@
-package com.factorytalkCleaner.entity;
+package com.factorytalkCleaner.cleaner.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

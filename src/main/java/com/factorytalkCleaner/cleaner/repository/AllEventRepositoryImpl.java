@@ -1,10 +1,10 @@
-package com.factorytalkCleaner.repository;
+package com.factorytalkCleaner.cleaner.repository;
 
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.factorytalkCleaner.entity.AllEvent;
+import com.factorytalkCleaner.cleaner.entity.AllEvent;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

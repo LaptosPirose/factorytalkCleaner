@@ -1,8 +1,10 @@
-package com.factorytalkCleaner.repository;
+package com.factorytalkCleaner.cleaner.repository;
 
 import java.util.List;
-import com.factorytalkCleaner.entity.AllEvent;
+
 import org.springframework.data.domain.Pageable; // Certifique-se deste import
+
+import com.factorytalkCleaner.cleaner.entity.AllEvent;
 
 public interface AllEventRepositoryCustom {
 
