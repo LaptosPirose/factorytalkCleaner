@@ -17,7 +17,7 @@ public class AlarmCleanupController {
 		this.alarmCleanupService = alarmCleanupService;
 	}
 
-	@GetMapping("/analisar")
+	@GetMapping("/analyse")
 	public String dispararAnalise() {
 		// Recebe o relatório detalhado do Service
 		String resultadoAnalise = alarmCleanupService.analisar();
@@ -27,7 +27,7 @@ public class AlarmCleanupController {
 		return "<pre>" + resultadoAnalise + "</pre>";
 	}
 
-	@GetMapping("/executar")
+	@GetMapping("/execute")
 	public String dispararLimpezaManual(@RequestParam(defaultValue = "5000") int lote) {
 		// Apenas repassa a String gerada e devolvida pelo Service
 		return alarmCleanupService.executarLimpezaCompleta(lote);

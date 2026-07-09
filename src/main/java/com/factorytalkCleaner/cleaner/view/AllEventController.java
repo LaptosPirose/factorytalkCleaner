@@ -10,7 +10,7 @@ import com.factorytalkCleaner.cleaner.entity.AllEvent;
 import com.factorytalkCleaner.cleaner.service.AlarmCleanupService;
 
 @RestController
-@RequestMapping("/clean/exibicao")
+@RequestMapping("/show")
 public class AllEventController {
 
 	private final AlarmCleanupService alarmCleanupService;
@@ -19,7 +19,7 @@ public class AllEventController {
 		this.alarmCleanupService = alarmCleanupService;
 	}
 
-	@GetMapping("/eventos")
+	@GetMapping("/events")
 	public List<AllEvent> obterEventos() {
 		return alarmCleanupService.listarAmostragem();
 	}
