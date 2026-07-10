@@ -2,6 +2,8 @@ package com.factorytalkCleaner.cleaner.view;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +21,12 @@ public class AllEventController {
 		this.alarmCleanupService = alarmCleanupService;
 	}
 
+	/**
+	 * @GetMapping("/events") public List<AllEvent> obterEventos() { return
+	 * alarmCleanupService.listarAmostragem(); }
+	 */
 	@GetMapping("/events")
-	public List<AllEvent> obterEventos() {
-		return alarmCleanupService.listarAmostragem();
+	public List<AllEvent> obterEventos(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+		return alarmCleanupService.listarAmostragem(pageable);
 	}
 }

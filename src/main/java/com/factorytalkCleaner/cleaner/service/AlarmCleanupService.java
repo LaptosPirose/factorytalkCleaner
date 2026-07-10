@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -116,11 +115,11 @@ public class AlarmCleanupService {
 		return relatorio.toString();
 	}
 
-	public List<AllEvent> listarAmostragem() {
+	public List<AllEvent> listarAmostragem(Pageable paginacao) {
 		log.info("Buscando amostragem dinâmica usando Pageable...");
 
 		// Página 0, com tamanho limite de 50.000 registros
-		Pageable paginacao = PageRequest.of(0, 50000);
+		//Pageable paginacao = PageRequest.of(0, 50000);
 
 		return repository.show(paginacao);
 	}
